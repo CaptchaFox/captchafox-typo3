@@ -6,10 +6,10 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'fe',
     'author_company' => 'scorialabs',
     'state' => 'stable',
-    'version' => '10.0.0',
+    'version' => '12.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.0.0-11.9.99',
+            'typo3' => '12.0.0-13.9.99',
         ],
     ],
     'autoload' => [

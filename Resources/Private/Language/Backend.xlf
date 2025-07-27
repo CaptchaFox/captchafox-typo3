@@ -9,9 +9,6 @@
             <trans-unit id="formEditor.elements.CaptchaFox.description" xml:space="preserve">
                 <source>Protect form with CaptchaFox</source>
             </trans-unit>
-			<trans-unit id="formEditor.elements.CaptchaFox.editor.validators.label" xml:space="preserve">
-				<source>CaptchaFox validation is active</source>
-			</trans-unit>
 			<trans-unit id="formEditor.elements.CaptchaFox.editor.validators.CaptchaFox.label" xml:space="preserve">
 				<source>CaptchaFox protection</source>
 			</trans-unit>

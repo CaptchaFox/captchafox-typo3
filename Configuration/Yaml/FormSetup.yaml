@@ -13,6 +13,6 @@ TYPO3:
               4507: 'EXT:captchafox_typo3/Resources/Private/Language/Backend.xlf'
             formEditorPartials:
               FormElement-CaptchaFox: Stage/SimpleTemplate
-            dynamicRequireJsModules:
+            dynamicJavaScriptModules:
               additionalViewModelModules:
-                10: 'TYPO3/CMS/CaptchafoxTypo3/Backend/FormEditor/CaptchaFoxViewModel'
+                1753635221774: '@captchafox/captchafox-typo3/backend/form-editor/view-model.js'
