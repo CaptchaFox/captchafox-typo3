@@ -1,0 +1,11 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          validatorsDefinition:
+            CaptchaFox:
+              implementationClassName: CaptchaFox\CaptchaFoxTypo3\Validation\CaptchaFoxValidator
+              formEditor:
+                iconIdentifier: form-validator
+                label: formEditor.elements.CaptchaFox.editor.validators.CaptchaFox.label

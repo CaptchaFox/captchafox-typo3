@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2017-07-12T08:43:45" product-name="captchafox">
+		<header/>
+		<body>
+			<trans-unit id="error_captchafox_missing-input-secret" xml:space="preserve">
+				<source>The CAPTCHA secret parameter is missing.</source>
+				<target>Das CAPTCHA Secret fehlt.</target>
+			</trans-unit>
+			<trans-unit id="error_captchafox_invalid-input-secret" xml:space="preserve">
+				<source>The CAPTCHA secret parameter is invalid or malformed.</source>
+				<target>Das CAPTCHA Secret ist ungültig oder fehlerhaft.</target>
+			</trans-unit>
+			<trans-unit id="error_captchafox_missing-input-response" xml:space="preserve">
+				<source>The CAPTCHA response parameter is missing.</source>
+				<target>Der CAPTCHA Antwort Parameter fehlt.</target>
+			</trans-unit>
+			<trans-unit id="error_captchafox_invalid-input-response" xml:space="preserve">
+				<source>The CAPTCHA response parameter is invalid or malformed.</source>
+				<target>Der CAPTCHA Antwort Parameter ist ungültig oder fehlerhaft.</target>
+			</trans-unit>
+			<trans-unit id="error_captchafox_invalid-bad-request" xml:space="preserve">
+				<source>The CAPTCHA request is invalid or malformed.</source>
+				<target>Die CAPTCHA Anfrage ist ungültig oder fehlerhaft.</target>
+			</trans-unit>
+			<trans-unit id="error_captchafox_invalid-timeout-or-duplicate" xml:space="preserve">
+				<source>The CAPTCHA response is no longer valid.</source>
+				<target>Die CAPTCHA Antwort ist nicht mehr gültig.</target>
+			</trans-unit>
+			<trans-unit id="error_captchafox_timeout-or-duplicate" xml:space="preserve">
+				<source>The CAPTCHA has expired.</source>
+				<target>Das CAPTCHA ist abgelaufen.</target>
+			</trans-unit>
+            <trans-unit id="error_captchafox_internal-required" xml:space="preserve">
+                <source>CAPTCHA was not solved</source>
+				<target>CAPTCHA wurde nicht gelöst.</target>
+            </trans-unit>
+		</body>
+	</file>
+</xliff>

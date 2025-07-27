@@ -1,0 +1,18 @@
+imports:
+  - { resource: './Validators/CaptchaFox.yaml' }
+  - { resource: './FormElements/Form.yaml' }
+  - { resource: './FormElements/CaptchaFox.yaml' }
+
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          formEditor:
+            translationFiles:
+              4507: 'EXT:captchafox_typo3/Resources/Private/Language/Backend.xlf'
+            formEditorPartials:
+              FormElement-CaptchaFox: Stage/SimpleTemplate
+            dynamicRequireJsModules:
+              additionalViewModelModules:
+                10: 'TYPO3/CMS/CaptchafoxTypo3/Backend/FormEditor/CaptchaFoxViewModel'

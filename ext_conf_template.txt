@@ -1,0 +1,14 @@
+# cat=plugin.captchafox; type=string; label=CaptchaFox Site Key
+site_key = sk_11111111000000001111111100000000
+
+# cat=plugin.captchafox; type=string; label=CaptchaFox Secret Key
+secret_key = ok_11111111000000001111111100000000
+
+# cat=plugin.captchafox; type=string; label=CaptchaFox Language
+lang = de
+
+# cat=plugin.captchafox; type=boolean; label= CaptchaFox robotMode: If you use a frontend testing tool, which cannot solve the captcha
+robotMode = 0
+
+# cat=plugin.captchafox; type=boolean; label= enforcing captcha even in development mode
+enforceCaptcha = 0

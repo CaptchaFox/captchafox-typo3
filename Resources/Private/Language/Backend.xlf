@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2017-06-07T12:22:32Z" product-name="recaptcha">
+		<header/>
+		<body>
+			<trans-unit id="formEditor.elements.CaptchaFox.label" xml:space="preserve">
+				<source>CaptchaFox</source>
+			</trans-unit>
+            <trans-unit id="formEditor.elements.CaptchaFox.description" xml:space="preserve">
+                <source>Protect form with CaptchaFox</source>
+            </trans-unit>
+			<trans-unit id="formEditor.elements.CaptchaFox.editor.validators.label" xml:space="preserve">
+				<source>CaptchaFox validation is active</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.CaptchaFox.editor.validators.CaptchaFox.label" xml:space="preserve">
+				<source>CaptchaFox protection</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.CaptchaFox.editor.doNotShowLabel.label" xml:space="preserve">
+				<source>Hide label in frontend</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.CaptchaFox.editor.displayMode.label" xml:space="preserve">
+				<source>Display Mode</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.CaptchaFox.editor.displayMode.option.inline" xml:space="preserve">
+				<source>Inline</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.CaptchaFox.editor.displayMode.option.popup" xml:space="preserve">
+				<source>Popup</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

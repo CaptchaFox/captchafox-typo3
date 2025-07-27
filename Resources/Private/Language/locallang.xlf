@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2017-07-12T08:43:45" product-name="recaptcha">
+		<header/>
+		<body>
+			<trans-unit id="error_captchafox_missing-input-secret" xml:space="preserve">
+				<source>The CAPTCHA secret parameter is missing.</source>
+			</trans-unit>
+			<trans-unit id="error_captchafox_invalid-input-secret" xml:space="preserve">
+				<source>The CAPTCHA secret parameter is invalid or malformed.</source>
+			</trans-unit>
+			<trans-unit id="error_captchafox_missing-input-response" xml:space="preserve">
+				<source>The CAPTCHA response parameter is missing.</source>
+			</trans-unit>
+			<trans-unit id="error_captchafox_invalid-input-response" xml:space="preserve">
+				<source>The CAPTCHA response parameter is invalid or malformed.</source>
+			</trans-unit>
+			<trans-unit id="error_captchafox_invalid-bad-request" xml:space="preserve">
+				<source>The CAPTCHA request is invalid or malformed.</source>
+			</trans-unit>
+			<trans-unit id="error_captchafox_invalid-timeout-or-duplicate" xml:space="preserve">
+				<source>The CAPTCHA response is no longer valid.</source>
+			</trans-unit>
+			<trans-unit id="error_captchafox_timeout-or-duplicate" xml:space="preserve">
+				<source>The CAPTCHA has expired.</source>
+			</trans-unit>
+            <trans-unit id="error_captchafox_internal-required" xml:space="preserve">
+                <source>CAPTCHA was not solved</source>
+            </trans-unit>
+		</body>
+	</file>
+</xliff>

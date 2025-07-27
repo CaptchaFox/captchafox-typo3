@@ -1,0 +1,19 @@
+plugin {
+
+    tx_captchafox {
+
+    }
+
+    tx_form {
+       settings {
+           yamlConfigurations {
+                4507 = EXT:captchafox_typo3/Configuration/Yaml/FormSetup.yaml
+           }
+       }
+       view {
+            partialRootPaths {
+                4507 = EXT:captchafox_typo3/Resources/Private/Partials/
+            }
+       }
+    }
+}

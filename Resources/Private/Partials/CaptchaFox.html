@@ -1,0 +1,56 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers"
+      xmlns:r="http://typo3.org/ns/CaptchaFox/CaptchaFoxTypo3/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<formvh:renderRenderable renderable="{element}">
+    <r:form.captchaFox>
+        <f:if condition="{showCaptcha}">
+            <f:then>
+                <f:form.validationResults for="{element.rootForm.identifier}.{element.identifier}">
+
+                    <f:if condition="{validationResults.errors}">
+                        <f:variable name="aria"
+                                    value="{invalid: 'true', describedby: '{element.uniqueIdentifier}-errors'}"/>
+                    </f:if>
+
+                    <f:render partial="Field/Field"
+                              arguments="{element: element, doNotShowLabel: element.renderingOptions.doNotShowLabel}"
+                              contentAs="elementContent">
+
+                        <div
+                                class="captchafox"
+                                data-sitekey="{configuration.site_key}"
+                                data-mode="{element.renderingOptions.displayMode}"
+                                data-lang="{configuration.lang}"
+                                data-callback="cfVerifyAndSubmit"
+                        ></div>
+
+                        <f:form.hidden
+                                property="{element.identifier}"
+                                id="{element.uniqueIdentifier}"
+                                class="{element.properties.elementClassAttribute} {element.rootForm.renderingOptions.fieldProperties.errorClassAttribute}"
+                                additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
+                                aria="{aria}"
+                                data="{captchafox-form-field: ''}"
+                                value=""
+                        />
+
+                        <f:asset.script identifier="captchafox_form"
+                                        src="EXT:captchafox_typo3/Resources/Public/JavaScript/Frontend/form.js"/>
+                        <f:asset.script identifier="captchafox" async="true" defer="true"
+                                        src="{configuration.api_server}{f:if(condition: configuration.lang, then: '?lang={configuration.lang}')}"/>
+
+                    </f:render>
+                </f:form.validationResults>
+
+            </f:then>
+            <f:else>
+                <div class="captchafox-development-mode">
+                    🚧 Typo3 is running in development mode. It will not be displayed or validated. 🚧
+                </div>
+            </f:else>
+        </f:if>
+    </r:form.captchaFox>
+</formvh:renderRenderable>
+</html>
