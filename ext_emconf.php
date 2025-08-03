@@ -1,10 +1,10 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'captchafox_official',
-    'description' => 'CaptchaFox Typo3',
+    'title' => 'CaptchaFox',
+    'description' => 'CaptchaFox Integration for EXT:form',
     'category' => 'fe',
-    'author_company' => 'scorialabs',
+    'author_company' => 'Scoria Labs GmbH',
     'state' => 'stable',
     'version' => '10.0.1',
     'constraints' => [
