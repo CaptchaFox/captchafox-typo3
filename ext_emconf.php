@@ -1,6 +1,6 @@
 <?php
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['captchafox_official'] = [
     'title' => 'captchafox_official',
     'description' => 'CaptchaFox Typo3',
     'category' => 'fe',
