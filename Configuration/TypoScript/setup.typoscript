@@ -7,12 +7,12 @@ plugin {
     tx_form {
        settings {
            yamlConfigurations {
-                4507 = EXT:captchafox_typo3/Configuration/Yaml/FormSetup.yaml
+                4507 = EXT:captchafox_official/Configuration/Yaml/FormSetup.yaml
            }
        }
        view {
             partialRootPaths {
-                4507 = EXT:captchafox_typo3/Resources/Private/Partials/
+                4507 = EXT:captchafox_official/Resources/Private/Partials/
             }
        }
     }

@@ -7,6 +7,6 @@ return [
         'form',
     ],
     'imports' => [
-        '@captchafox/captchafox-typo3/' => 'EXT:captchafox_typo3/Resources/Public/JavaScript/',
+        '@captchafox/captchafox-typo3/' => 'EXT:captchafox_official/Resources/Public/JavaScript/',
     ],
 ];

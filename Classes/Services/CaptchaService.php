@@ -32,7 +32,7 @@ class CaptchaService
 
     protected function initialize(): void
     {
-        $this->configuration = $this->extensionConfiguration->get('captchafox_typo3');
+        $this->configuration = $this->extensionConfiguration->get('captchafox_official');
     }
 
     public function getConfiguration(): array

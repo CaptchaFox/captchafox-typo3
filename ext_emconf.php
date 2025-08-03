@@ -1,7 +1,7 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'captchafox_typo3',
+    'title' => 'captchafox_official',
     'description' => 'CaptchaFox Typo3',
     'category' => 'fe',
     'author_company' => 'scorialabs',

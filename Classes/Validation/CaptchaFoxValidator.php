@@ -38,8 +38,8 @@ class CaptchaFoxValidator extends AbstractValidator
 
         if ($status['error'] !== '') {
             $errorText = $this->translateErrorMessage(
-                'LLL:EXT:captchafox_typo3/Resources/Private/Language/locallang.xlf:error_captchafox_' . $status['error'],
-                'captchafox_typo3'
+                'LLL:EXT:captchafox_official/Resources/Private/Language/locallang.xlf:error_captchafox_' . $status['error'],
+                'captchafox_official'
             );
 
             if (empty($errorText)) {
