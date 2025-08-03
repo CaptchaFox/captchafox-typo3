@@ -10,7 +10,7 @@ TYPO3:
         standard:
           formEditor:
             translationFiles:
-              4507: 'EXT:captchafox_typo3/Resources/Private/Language/Backend.xlf'
+              4507: 'EXT:captchafox_official/Resources/Private/Language/Backend.xlf'
             formEditorPartials:
               FormElement-CaptchaFox: Stage/SimpleTemplate
             dynamicRequireJsModules:
