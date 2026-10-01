@@ -1,7 +1,7 @@
-# cat=basic//10; type=string; label=Site key: The site key from the CaptchaFox portal (Sites). The default is the public test key, which protects nothing.
+# cat=basic//10; type=string; label=Site key: The site key from the CaptchaFox portal (Sites). The default is the public test key, which protects nothing. A site can override it with the site setting captchafox.siteKey.
 site_key = sk_11111111000000001111111100000000
 
-# cat=basic//20; type=string; label=Secret key: The secret key of your CaptchaFox organization. The default is the public test key.
+# cat=basic//20; type=string; label=Secret key: The secret key of your CaptchaFox organization. The default is the public test key. A site can override it with the site setting captchafox.secretKey.
 secret_key = ok_11111111000000001111111100000000
 
 # cat=basic//30; type=string; label=Language: Language code for the widget, e.g. de or en. Leave empty to use the language of the current site language.

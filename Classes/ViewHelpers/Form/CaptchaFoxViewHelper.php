@@ -23,7 +23,7 @@ class CaptchaFoxViewHelper extends AbstractFormFieldViewHelper
 
         $container = $this->templateVariableContainer;
         $container->add('captchafox', [
-            'siteKey' => $this->captchaService->getSiteKey(),
+            'siteKey' => $this->captchaService->getSiteKey($request),
             'language' => $this->captchaService->getWidgetLanguage($request) ?? '',
             'scriptUrl' => $this->captchaService->getScriptUrl(),
             'disabledReason' => $this->captchaService->getDisabledReason($request),

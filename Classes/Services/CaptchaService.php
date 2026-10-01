@@ -14,10 +14,14 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
  * Extension configuration, widget settings and server-side verification of CaptchaFox answers.
+ *
+ * Site key and secret key can be set per site (site settings captchafox.siteKey and captchafox.secretKey),
+ * e.g. for several domains in one installation; each falls back to the extension configuration.
  */
 class CaptchaService implements LoggerAwareInterface
 {
@@ -63,9 +67,29 @@ class CaptchaService implements LoggerAwareInterface
         $this->configuration = array_replace(self::DEFAULTS, is_array($configuration) ? $configuration : []);
     }
 
-    public function getSiteKey(): string
+    public function getSiteKey(ServerRequestInterface $request): string
     {
-        return trim((string)$this->configuration['site_key']);
+        return $this->getSiteSetting($request, 'siteKey') ?? trim((string)$this->configuration['site_key']);
+    }
+
+    private function getSecretKey(ServerRequestInterface $request): string
+    {
+        return $this->getSiteSetting($request, 'secretKey') ?? trim((string)$this->configuration['secret_key']);
+    }
+
+    /**
+     * A value from the settings of the current site, or null if the site sets none.
+     */
+    private function getSiteSetting(ServerRequestInterface $request, string $name): ?string
+    {
+        $site = $request->getAttribute('site');
+        if (!$site instanceof Site) {
+            return null;
+        }
+
+        $value = $site->getSettings()->get('captchafox.' . $name);
+
+        return is_string($value) && trim($value) !== '' ? trim($value) : null;
     }
 
     public function getScriptUrl(): string
@@ -156,9 +180,9 @@ class CaptchaService implements LoggerAwareInterface
     private function verify(string $token, ServerRequestInterface $request): VerificationResult
     {
         $parameters = [
-            'secret' => trim((string)$this->configuration['secret_key']),
+            'secret' => $this->getSecretKey($request),
             'response' => $token,
-            'sitekey' => $this->getSiteKey(),
+            'sitekey' => $this->getSiteKey($request),
         ];
 
         $normalizedParams = $request->getAttribute('normalizedParams');
