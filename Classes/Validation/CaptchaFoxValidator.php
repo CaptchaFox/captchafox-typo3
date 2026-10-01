@@ -10,18 +10,20 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 class CaptchaFoxValidator extends AbstractValidator
 {
+    private const LANGUAGE_FILE = 'LLL:EXT:captchafox_official/Resources/Private/Language/locallang.xlf:';
+
     protected $acceptsEmptyValues = false;
 
     protected CaptchaService $captchaService;
 
-    public function injectCaptchaService(CaptchaService $captchaService)
+    public function injectCaptchaService(CaptchaService $captchaService): void
     {
         $this->captchaService = $captchaService;
     }
 
-    public function __construct(array $options = []) {
-
-
+    public function __construct(array $options = [])
+    {
+        // TYPO3 10 passes the options to the constructor, TYPO3 11 to setOptions().
         if ((new Typo3Version())->getMajorVersion() < 11) {
             parent::__construct($options);
         }
@@ -34,21 +36,18 @@ class CaptchaFoxValidator extends AbstractValidator
 
     public function isValid($value): void
     {
-        $status = $this->captchaService->validate((string)$value);
+        $status = $this->captchaService->validate(is_string($value) ? $value : '', $GLOBALS['TYPO3_REQUEST']);
 
-        if ($status['error'] !== '') {
-            $errorText = $this->translateErrorMessage(
-                'LLL:EXT:captchafox_official/Resources/Private/Language/locallang.xlf:error_captchafox_' . $status['error'],
-                'captchafox_official'
-            );
-
-            if (empty($errorText)) {
-                $errorText = htmlspecialchars($status['error']);
-            }
-
-            $this->addError($errorText, 1753561629);
+        if ($status['verified']) {
+            return;
         }
+
+        $message = (string)$this->translateErrorMessage(self::LANGUAGE_FILE . 'error_captchafox_' . $status['error'], 'captchafox_official');
+        if ($message === '') {
+            // Error codes without a text of their own (e.g. new codes of the API).
+            $message = (string)$this->translateErrorMessage(self::LANGUAGE_FILE . 'error_captchafox_default', 'captchafox_official');
+        }
+
+        $this->addError($message, 1753561629);
     }
-
-
 }
