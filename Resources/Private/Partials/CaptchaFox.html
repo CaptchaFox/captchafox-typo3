@@ -5,50 +5,38 @@
 
 <formvh:renderRenderable renderable="{element}">
     <r:form.captchaFox>
-        <f:if condition="{showCaptcha}">
+        <f:if condition="{captchafox.disabledReason}">
             <f:then>
-                <f:form.validationResults for="{element.rootForm.identifier}.{element.identifier}">
-
-                    <f:if condition="{validationResults.errors}">
-                        <f:variable name="aria"
-                                    value="{invalid: 'true', describedby: '{element.uniqueIdentifier}-errors'}"/>
-                    </f:if>
-
-                    <f:render partial="Field/Field"
-                              arguments="{element: element, doNotShowLabel: element.renderingOptions.doNotShowLabel}"
-                              contentAs="elementContent">
-
-                        <div
-                                class="captchafox"
-                                data-sitekey="{configuration.site_key}"
-                                data-mode="{element.renderingOptions.displayMode}"
-                                data-lang="{configuration.lang}"
-                                data-callback="cfVerifyAndSubmit"
-                        ></div>
-
-                        <f:form.hidden
-                                property="{element.identifier}"
-                                id="{element.uniqueIdentifier}"
-                                class="{element.properties.elementClassAttribute} {element.rootForm.renderingOptions.fieldProperties.errorClassAttribute}"
-                                additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
-                                aria="{aria}"
-                                data="{captchafox-form-field: ''}"
-                                value=""
-                        />
-
-                        <f:asset.script identifier="captchafox_form"
-                                        src="EXT:captchafox_official/Resources/Public/JavaScript/Frontend/form.js"/>
-                        <f:asset.script identifier="captchafox" async="true" defer="true"
-                                        src="{configuration.api_server}{f:if(condition: configuration.lang, then: '?lang={configuration.lang}')}"/>
-
-                    </f:render>
-                </f:form.validationResults>
-
+                <div class="captchafox-disabled">
+                    <f:translate key="LLL:EXT:captchafox_official/Resources/Private/Language/locallang.xlf:notice.{captchafox.disabledReason}"/>
+                </div>
             </f:then>
             <f:else>
-                <div class="captchafox-development-mode">
-                    🚧 Typo3 is running in development mode. It will not be displayed or validated. 🚧
-                </div>
+                <f:render partial="Field/Field"
+                          arguments="{element: element, doNotShowLabel: element.renderingOptions.doNotShowLabel}"
+                          contentAs="elementContent">
+
+                    <f:comment>form.js renders the widget into this container and writes the token into the field named in data-captchafox-field.</f:comment>
+                    <div class="captchafox"
+                         data-captchafox-typo3=""
+                         data-captchafox-field="{element.uniqueIdentifier}"
+                         data-sitekey="{captchafox.siteKey}"
+                         data-mode="{element.renderingOptions.displayMode}"
+                         data-lang="{captchafox.language}"></div>
+
+                    <f:form.hidden
+                            property="{element.identifier}"
+                            id="{element.uniqueIdentifier}"
+                            additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
+                            data="{captchafox-form-field: ''}"
+                            value=""
+                    />
+
+                    <f:asset.script identifier="captchafox_form"
+                                    src="EXT:captchafox_official/Resources/Public/JavaScript/Frontend/form.js"/>
+                    <f:asset.script identifier="captchafox" async="true" defer="true" src="{captchafox.scriptUrl}"/>
+
+                </f:render>
             </f:else>
         </f:if>
     </r:form.captchaFox>
