@@ -1,19 +1,2 @@
-plugin {
-
-    tx_captchafox {
-
-    }
-
-    tx_form {
-       settings {
-           yamlConfigurations {
-                4507 = EXT:captchafox_official/Configuration/Yaml/FormSetup.yaml
-           }
-       }
-       view {
-            partialRootPaths {
-                4507 = EXT:captchafox_official/Resources/Private/Partials/
-            }
-       }
-    }
-}
+# The static template "CaptchaFox-Typo3" is no longer needed: ext_localconf.php registers the form
+# setup for every site. This file stays so that existing template records that include it still work.
