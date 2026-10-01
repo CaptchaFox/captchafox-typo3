@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CaptchaFox\CaptchaFoxTypo3\ViewHelpers\Form;
 
 use CaptchaFox\CaptchaFoxTypo3\Services\CaptchaService;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 
 /**
@@ -19,7 +20,9 @@ class CaptchaFoxViewHelper extends AbstractFormFieldViewHelper
 
     public function render(): string
     {
-        $request = $GLOBALS['TYPO3_REQUEST'];
+        $request = $this->renderingContext->hasAttribute(ServerRequestInterface::class)
+            ? $this->renderingContext->getAttribute(ServerRequestInterface::class)
+            : $GLOBALS['TYPO3_REQUEST'];
 
         $container = $this->templateVariableContainer;
         $container->add('captchafox', [

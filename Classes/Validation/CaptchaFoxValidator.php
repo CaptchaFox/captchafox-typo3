@@ -35,9 +35,6 @@ class CaptchaFoxValidator extends AbstractValidator
 
     private function getCurrentRequest(): ServerRequestInterface
     {
-        // TYPO3 13.2+ hands the request to validators; TYPO3 12 only has the global one.
-        $request = method_exists($this, 'getRequest') ? $this->getRequest() : null;
-
-        return $request instanceof ServerRequestInterface ? $request : $GLOBALS['TYPO3_REQUEST'];
+        return $this->getRequest() ?? $GLOBALS['TYPO3_REQUEST'];
     }
 }
