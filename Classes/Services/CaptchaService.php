@@ -4,154 +4,185 @@ declare(strict_types=1);
 
 namespace CaptchaFox\CaptchaFoxTypo3\Services;
 
+use CaptchaFox\CaptchaFoxTypo3\Language\LanguageMapper;
+use CaptchaFox\CaptchaFoxTypo3\Verification\VerificationResult;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
-class CaptchaService
+/**
+ * Extension configuration, widget settings and server-side verification of CaptchaFox answers.
+ */
+class CaptchaService implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
 
-    protected array $configuration = [];
+    public const VERIFY_URL = 'https://api.captchafox.com/siteverify';
+    public const SCRIPT_URL = 'https://cdn.captchafox.com/api.js';
 
-    protected ExtensionConfiguration $extensionConfiguration;
+    /**
+     * Global function the widget script calls once it is loaded (defined in form.js).
+     */
+    public const ONLOAD_CALLBACK = 'captchaFoxTypo3OnLoad';
 
-    protected RequestFactory $requestFactory;
+    /**
+     * Seconds to wait for /siteverify. A slower answer counts as unavailable; without a limit a
+     * hanging API would hold the request until the PHP time limit.
+     */
+    public const TIMEOUT_SECONDS = 5;
+
+    public const DISABLED_ROBOT_MODE = 'robotMode';
+    public const DISABLED_DEVELOPMENT = 'development';
+
+    private const DEFAULTS = [
+        'site_key' => 'sk_11111111000000001111111100000000',
+        'secret_key' => 'ok_11111111000000001111111100000000',
+        'lang' => '',
+        'apiUnavailable' => 'allow',
+        'robotMode' => '0',
+        'enforceCaptcha' => '0',
+    ];
+
+    private array $configuration;
 
     public function __construct(
         ExtensionConfiguration $extensionConfiguration,
-        RequestFactory         $requestFactory
-    )
-    {
-        $this->extensionConfiguration = $extensionConfiguration;
-        $this->requestFactory = $requestFactory;
-        $this->initialize();
+        private readonly RequestFactory $requestFactory
+    ) {
+        try {
+            $configuration = $extensionConfiguration->get('captchafox_official');
+        } catch (\Throwable) {
+            $configuration = [];
+        }
+        $this->configuration = array_replace(self::DEFAULTS, is_array($configuration) ? $configuration : []);
     }
 
-    protected function initialize(): void
+    public function getSiteKey(): string
     {
-        $this->configuration = $this->extensionConfiguration->get('captchafox_official');
+        return trim((string)$this->configuration['site_key']);
     }
 
-    public function getConfiguration(): array
+    public function getScriptUrl(): string
     {
-        return $this->configuration;
+        // Explicit rendering: form.js renders each widget into its own form element. A "lang"
+        // parameter here would be global and is ignored with render=explicit anyway.
+        return self::SCRIPT_URL . '?render=explicit&onload=' . self::ONLOAD_CALLBACK;
     }
 
-    public function validate(string $value = ''): array
+    /**
+     * Why the widget is neither shown nor checked, or an empty string if CaptchaFox is active.
+     */
+    public function getDisabledReason(ServerRequestInterface $request): string
     {
-        if (!$this->getShowCaptcha()) {
-            return [
-                'verified' => true,
-                'error' => '',
-            ];
+        if ((bool)$this->configuration['robotMode']) {
+            return self::DISABLED_ROBOT_MODE;
         }
 
-        if (empty($value) || !is_string($value)) {
-            return [
-                'verified' => false,
-                'error' => 'internal-required',
-            ];
+        if (
+            Environment::getContext()->isDevelopment()
+            && !(bool)$this->configuration['enforceCaptcha']
+            && !ApplicationType::fromRequest($request)->isBackend()
+        ) {
+            return self::DISABLED_DEVELOPMENT;
         }
 
-        $secret_key = $this->configuration['secret_key'];
-        $site_key = $this->configuration['site_key'];
+        return '';
+    }
 
-        $request = [
-            'secret' => $secret_key,
-            'sitekey' => $site_key,
-            'remoteIp' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
-            'response' => trim(
-                !empty($value) ? $value : (string)($this->getRequest()->getParsedBody()['cf-captcha-response'] ?? '')
-            ),
+    /**
+     * The configured widget language, or the one of the current site language. Null lets the widget
+     * follow the browser language.
+     */
+    public function getWidgetLanguage(ServerRequestInterface $request): ?string
+    {
+        $configured = trim((string)$this->configuration['lang']);
+        if ($configured !== '') {
+            return $configured;
+        }
+
+        $language = $request->getAttribute('language');
+
+        return $language instanceof SiteLanguage ? LanguageMapper::fromLocale((string)$language->getLocale()) : null;
+    }
+
+    /**
+     * @return array{verified: bool, error: string} The error is a key suffix for the language file.
+     */
+    public function validate(string $token, ServerRequestInterface $request): array
+    {
+        if ($this->getDisabledReason($request) !== '') {
+            return ['verified' => true, 'error' => ''];
+        }
+
+        $token = trim($token);
+        if ($token === '') {
+            return ['verified' => false, 'error' => 'internal-required'];
+        }
+
+        $result = $this->verify($token, $request);
+
+        if ($result->status === VerificationResult::VALID) {
+            return ['verified' => true, 'error' => ''];
+        }
+
+        if ($result->status === VerificationResult::INVALID) {
+            $this->logger?->info('Answer rejected by CaptchaFox: ' . (implode(', ', $result->errorCodes) ?: 'no error code'));
+
+            return ['verified' => false, 'error' => $result->errorCodes[0] ?? 'default'];
+        }
+
+        // An outage at CaptchaFox must not lock visitors out of the site's forms, so only an explicit
+        // "block" setting rejects the form; the outage is logged either way.
+        $block = $this->configuration['apiUnavailable'] === 'block';
+        $this->logger?->warning(sprintf(
+            'CaptchaFox API unavailable (%s), form %s.',
+            $result->reason,
+            $block ? 'blocked' : 'let through'
+        ));
+
+        return $block ? ['verified' => false, 'error' => 'service-unavailable'] : ['verified' => true, 'error' => ''];
+    }
+
+    /**
+     * Sends the token to /siteverify. There is no retry: real tokens are single-use, so a second
+     * attempt could only fail.
+     */
+    private function verify(string $token, ServerRequestInterface $request): VerificationResult
+    {
+        $parameters = [
+            'secret' => trim((string)$this->configuration['secret_key']),
+            'response' => $token,
+            'sitekey' => $this->getSiteKey(),
         ];
 
-
-        $result = [
-            'verified' => false,
-            'error' => '',
-        ];
-
-        if (empty($request['response'])) {
-            $result['error'] = 'missing-input-response';
-        } else {
-            $response = $this->verify($request);
-
-            if (!$response) {
-                $result['error'] = 'validation-server-not-responding';
-            }
-
-            if ($response['success']) {
-                $result['verified'] = true;
-            } else {
-                $result['error'] = (string)(
-                is_array($response['error-codes']) ?
-                    reset($response['error-codes']) :
-                    $response['error-codes']
-                );
-            }
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        if (!$normalizedParams instanceof NormalizedParams) {
+            $normalizedParams = NormalizedParams::createFromRequest($request);
+        }
+        // Behind a reverse proxy this is only the visitor's address if TYPO3 knows the proxy
+        // ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP']).
+        $remoteAddress = $normalizedParams->getRemoteAddress();
+        if ($remoteAddress !== '') {
+            $parameters['remoteIp'] = $remoteAddress;
         }
 
-        return $result;
-    }
-
-    protected function verify(array $data): array
-    {
-
-        $verifyServerInfo = @parse_url($this->configuration['verify_server']);
-
-        if (empty($verifyServerInfo)) {
-            return [
-                'success' => false,
-                'error-codes' => 'captchafox-not-reachable',
-            ];
+        try {
+            $response = $this->requestFactory->request(self::VERIFY_URL, 'POST', [
+                'form_params' => $parameters,
+                'timeout' => self::TIMEOUT_SECONDS,
+                'connect_timeout' => self::TIMEOUT_SECONDS,
+                'http_errors' => false,
+            ]);
+        } catch (\Throwable $exception) {
+            return VerificationResult::unavailable('request failed: ' . $exception->getMessage());
         }
 
-        $params = ltrim(GeneralUtility::implodeArrayForUrl('', $data), '&');
-
-        $options = [
-            'headers' => [
-                'Content-Type' => 'application/x-www-form-urlencoded',
-            ],
-            'body' => $params,
-        ];
-
-        $response = $this->requestFactory->request($this->configuration['verify_server'], 'POST', $options);
-
-        $body = (string)$response->getBody();
-        return $body ? json_decode($body, true) : [];
-    }
-
-
-    public function getShowCaptcha(): bool
-    {
-        return !$this->isInRobotMode()
-            && (
-                ApplicationType::fromRequest($this->getRequest())->isBackend()
-                || !$this->isDevelopmentMode()
-                || $this->isEnforceCaptcha()
-            );
-    }
-
-    protected function isInRobotMode(): bool
-    {
-        return (bool)($this->configuration['robotMode'] ?? false);
-    }
-
-    protected function isEnforceCaptcha(): bool
-    {
-        return (bool)($this->configuration['enforceCaptcha'] ?? false);
-    }
-
-    protected function isDevelopmentMode(): bool
-    {
-        return Environment::getContext()->isDevelopment();
-    }
-
-    protected function getRequest(): ServerRequestInterface
-    {
-        return $GLOBALS['TYPO3_REQUEST'];
+        return VerificationResult::fromResponse($response->getStatusCode(), (string)$response->getBody());
     }
 }
