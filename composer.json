@@ -17,20 +17,40 @@
         "typo3/cms-core": "^12.4 || ^13.4",
         "typo3/cms-form": "^12.4 || ^13.4"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5 || ^11.5 || ^12.0"
+    },
     "autoload": {
         "psr-4": {
             "CaptchaFox\\CaptchaFoxTypo3\\": "Classes/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "CaptchaFox\\CaptchaFoxTypo3\\Tests\\": "Tests/"
+        }
+    },
     "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin",
+        "sort-packages": true,
         "allow-plugins": {
             "typo3/class-alias-loader": true,
             "typo3/cms-composer-installers": true
+        },
+        "policy": {
+            "advisories": {
+                "block": false
+            }
         }
+    },
+    "scripts": {
+        "test": "phpunit"
     },
     "extra": {
         "typo3/cms": {
-            "extension-key": "captchafox_official"
+            "extension-key": "captchafox_official",
+            "web-dir": ".Build/public"
         }
     }
 }
