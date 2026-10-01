@@ -58,9 +58,9 @@ captchafox:
   secretKey: '%env(CAPTCHAFOX_SECRET_KEY_EXAMPLE_COM)%'
 ```
 
-From TYPO3 13 on you can also edit both values in **Site Management > Settings** after adding the set
-"CaptchaFox" (`captchafox/captchafox`) to the site. The editor shows the secret in plain text; the
-`%env()%` reference above avoids that.
+You can also edit both values in the backend: add the set "CaptchaFox" (`captchafox/captchafox`) to the
+site, then use **Sites > Edit site settings**. The editor shows the secret in plain text; the `%env()%`
+reference above avoids that.
 
 ## Usage
 
