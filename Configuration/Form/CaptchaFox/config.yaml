@@ -1,8 +1,47 @@
+# Form configuration of the CaptchaFox extension. TYPO3 finds this file by itself (form set,
+# Configuration/Form/<set>/config.yaml); neither TypoScript nor a static template is needed.
+name: captchafox/captchafox-typo3
+label: 'CaptchaFox'
+priority: 200
+
 prototypes:
   standard:
-    formElementsDefinition:
+    formEditor:
+      translationFiles:
+        4507: 'EXT:captchafox_official/Resources/Private/Language/Backend.xlf'
+
+    validatorsDefinition:
       CaptchaFox:
+        implementationClassName: CaptchaFox\CaptchaFoxTypo3\Validation\CaptchaFoxValidator
         formEditor:
+          iconIdentifier: form-validator
+          label: formEditor.elements.CaptchaFox.editor.validators.CaptchaFox.label
+
+    formElementsDefinition:
+      Form:
+        renderingOptions:
+          # Partial of the CaptchaFox element (Resources/Private/Partials/CaptchaFox.html)
+          partialRootPaths:
+            4507: 'EXT:captchafox_official/Resources/Private/Partials/'
+
+      # The form editor renders the element with its generic web component; no stage template or
+      # JavaScript of its own is needed.
+      CaptchaFox:
+        implementationClassName: CaptchaFox\CaptchaFoxTypo3\Domain\Model\FormElements\CaptchaFoxElement
+        properties:
+          containerClassAttribute: 'form-element form-element-captchafox mb-3 captchafox'
+          labelClassAttribute: form-label
+        formEditor:
+          label: formEditor.elements.CaptchaFox.label
+          description: formEditor.elements.CaptchaFox.description
+          group: custom
+          groupSorting: 700
+          iconIdentifier: t3-form-icon-captchafox
+          predefinedDefaults:
+            renderingOptions:
+              doNotShowLabel: 1
+            validators:
+              - identifier: CaptchaFox
           editors:
             100:
               identifier: header
@@ -50,17 +89,3 @@ prototypes:
                     identifier: header
                     templateName: Inspector-CollectionElementHeaderEditor
                     label: formEditor.elements.CaptchaFox.editor.validators.CaptchaFox.label
-          predefinedDefaults:
-            renderingOptions:
-              doNotShowLabel: 1
-            validators:
-              - identifier: CaptchaFox
-          label: formEditor.elements.CaptchaFox.label
-          group: custom
-          groupSorting: 700
-          description: formEditor.elements.CaptchaFox.description
-          iconIdentifier: t3-form-icon-captchafox
-        implementationClassName: 'CaptchaFox\CaptchaFoxTypo3\Domain\Model\FormElements\CaptchaFoxElement'
-        properties:
-          containerClassAttribute: 'form-element form-element-captchafox mb-3 captchafox'
-          labelClassAttribute: form-label

@@ -1,2 +1,3 @@
-# The static template "CaptchaFox-Typo3" is no longer needed: ext_localconf.php registers the form
-# setup for every site. This file stays so that existing template records that include it still work.
+# The static template "CaptchaFox-Typo3" is no longer needed: TYPO3 loads the form configuration from
+# Configuration/Form/CaptchaFox/config.yaml. This file stays so that template records that still
+# include it keep working.
