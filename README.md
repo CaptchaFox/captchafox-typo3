@@ -1,52 +1,60 @@
 # CaptchaFox TYPO3 Extension
 
-CaptchaFox offers CAPTCHA protection for TYPO3 forms. This extension integrates the CaptchaFox service into the TYPO3 form framework. After installation a new form element and validator become available inside the form editor, allowing editors to easily protect forms against bots.
+CaptchaFox protects TYPO3 forms against bots. This extension (`captchafox_official`) adds a
+"CaptchaFox" element to the TYPO3 form framework (EXT:form). Editors place it in a form with the
+form editor; the extension renders the CaptchaFox widget and verifies the answer on the server
+before the form is accepted.
 
 ## Compatibility
 
-| Extension version | Supported TYPO3 versions |
-|-------------------|-------------------------|
-| **10.x**          | TYPO3 v10 and v11 |
-| **12.x**          | TYPO3 v12 and v13 |
+| Extension version | Branch | TYPO3 | PHP |
+|---|---|---|---|
+| 14.x | `main` | 14.3 or newer | 8.2+ |
+| **12.x (this branch)** | `v12` | 12.4 LTS and 13.4 LTS | 8.1+ |
+| 10.x (no further development) | `v10` | 10.4.11+ and 11.5.7+ | 7.4+ |
 
 ## Installation
 
-Install via Composer and choose the appropriate version for your TYPO3 installation:
-
 ```bash
-composer require captchafox/captchafox-typo3:^12   # TYPO3 12 or 13
-# or
-composer require captchafox/captchafox-typo3:^10   # TYPO3 10 or 11
+composer require captchafox/captchafox-typo3:^12
 ```
 
-Activate the extension in the Extension Manager or via the TYPO3 CLI.
+Without Composer, install the extension from the TYPO3 Extension Repository (TER). No static
+template needs to be included: the extension registers its form configuration for all sites. (Up
+to 12.0.1 the static template "CaptchaFox-Typo3" was required; an existing include does no harm.)
 
 ## Configuration
 
-The extension can be configured through the Extension Manager. Important options defined in `ext_conf_template.txt` include your site key, secret key and language:
+Set the keys in **Admin Tools > Settings > Extension Configuration > captchafox_official**:
 
-```txt
-site_key = sk_11111111000000001111111100000000
-secret_key = ok_11111111000000001111111100000000
-lang = de
-```
+| Option | Default | Meaning |
+|---|---|---|
+| `site_key` | public test key | Site key from the CaptchaFox portal (Sites) |
+| `secret_key` | public test key | Secret key of your CaptchaFox organization |
+| `lang` | empty | Widget language code (e.g. `de`). Empty: the language of the current site language |
+| `apiUnavailable` | `allow` | If CaptchaFox gives no usable answer (network error, timeout after 5 s, server error): `allow` lets the form through, `block` rejects it. Answers that CaptchaFox rejects are always rejected. Both cases are written to the TYPO3 log. |
+| `robotMode` | off | Switches CaptchaFox off for **all** visitors, for automated tests only. Never enable it on a live site. |
+| `enforceCaptcha` | off | Without it, CaptchaFox is neither shown nor checked while TYPO3 runs in the Development context. |
 
-Additional options like `robotMode` and `enforceCaptcha` control whether the CAPTCHA should be shown during automated testing or development environments.
+The default keys are CaptchaFox's public test keys: the widget shows "For testing purposes only."
+and nothing is protected until you enter your own keys.
 
 ## Usage
 
-After installation you can add the "CaptchaFox" element to a form using the form editor. Internally the partial `Resources/Private/Partials/CaptchaFox.html` renders the widget and inserts the required scripts:
+Add the element "CaptchaFox" to a form in the form editor. The element always verifies the answer,
+even if its validator was removed from the form definition. Several forms with CaptchaFox on one
+page work independently.
 
-```html
-<div class="captchafox"
-     data-sitekey="{configuration.site_key}"
-     data-mode="{element.renderingOptions.displayMode}"
-     data-lang="{configuration.lang}"
-     data-callback="cfVerifyAndSubmit"></div>
-```
+## Notes for operators
 
-Validation is handled by the service in `Classes/Services/CaptchaService.php`, which sends the user response to the configured verification server.
+- **Reverse proxies:** The visitor's IP address is sent to CaptchaFox (`remoteIp`). Behind a proxy
+  or load balancer, configure `$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP']`, otherwise the
+  proxy's address is sent.
+- **Content Security Policy:** Allow `https://*.captchafox.com` for `script-src` (plus `blob:`),
+  `connect-src`, `style-src`, `img-src` and `media-src`.
+- The widget script is loaded from `https://cdn.captchafox.com/api.js`; it cannot be bundled or
+  self-hosted.
 
 ## License
 
-This extension is released under the GPL-2.0-or-later license.
+GPL-2.0-or-later
