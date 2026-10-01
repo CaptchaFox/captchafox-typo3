@@ -75,6 +75,17 @@ page work independently.
 - The widget script is loaded from `https://cdn.captchafox.com/api.js`; it cannot be bundled or
   self-hosted.
 
+## Development
+
+Unit tests cover the verification of CaptchaFox answers, the language mapping and the captcha service;
+they run on every push and pull request (GitHub Actions). Locally, without PHP on the host:
+
+```bash
+docker run --rm -v "$PWD":/app -w /app composer:2 sh -c 'composer install && composer test'
+```
+
+Dependencies are installed into `.Build/`, which is neither committed nor packaged.
+
 ## License
 
 GPL-2.0-or-later
