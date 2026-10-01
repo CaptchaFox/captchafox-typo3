@@ -9,19 +9,22 @@ before the form is accepted.
 
 | Extension version | Branch | TYPO3 | PHP |
 |---|---|---|---|
-| 14.x | `main` | 14.3 or newer | 8.2+ |
-| **12.x (this branch)** | `v12` | 12.4 LTS and 13.4 LTS | 8.1+ |
+| **14.x (this branch)** | `main` | 14.3 or newer | 8.2+ |
+| 12.x | `v12` | 12.4 LTS and 13.4 LTS | 8.1+ |
 | 10.x (no further development) | `v10` | 10.4.11+ and 11.5.7+ | 7.4+ |
 
 ## Installation
 
 ```bash
-composer require captchafox/captchafox-typo3:^12
+composer require captchafox/captchafox-typo3:^14
 ```
 
 Without Composer, install the extension from the TYPO3 Extension Repository (TER). No static
-template needs to be included: the extension registers its form configuration for all sites. (Up
-to 12.0.1 the static template "CaptchaFox-Typo3" was required; an existing include does no harm.)
+template and no TypoScript are needed: TYPO3 loads the form configuration of the extension
+(`Configuration/Form/CaptchaFox/config.yaml`) by itself. An include of the former static template
+"CaptchaFox-Typo3" does no harm and can be removed.
+
+When upgrading from TYPO3 13, change the Composer requirement from `^12` to `^14`.
 
 ## Configuration
 
