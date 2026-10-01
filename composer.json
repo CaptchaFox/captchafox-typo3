@@ -2,7 +2,7 @@
     "name": "captchafox/captchafox-typo3",
     "description": "CaptchaFox - Protects TYPO3 forms (EXT:form) against bots with CaptchaFox, verified on the server.",
     "type": "typo3-cms-extension",
-    "version": "12.1.0",
+    "version": "14.0.0",
     "license": [
         "GPL-2.0-or-later"
     ],
