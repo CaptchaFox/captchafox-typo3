@@ -1,0 +1,34 @@
+# Unit tests on every push and pull request, with the lowest and highest PHP version of this release
+# line; Composer resolves the matching TYPO3 version (PHP 8.1: TYPO3 12.4, PHP 8.5: TYPO3 13.4).
+name: Tests
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    name: Unit tests (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.1', '8.5']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: intl, mbstring, json, zip
+          tools: composer:v2
+          coverage: none
+
+      - run: composer install --no-progress
+
+      - run: composer test
