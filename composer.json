@@ -1,13 +1,21 @@
 {
     "name": "captchafox/captchafox-typo3",
-    "description": "CaptchaFox Typo3",
+    "description": "CaptchaFox - Protects TYPO3 forms (EXT:form) against bots with CaptchaFox, verified on the server.",
     "type": "typo3-cms-extension",
     "version": "10.0.2",
     "license": [
         "GPL-2.0-or-later"
     ],
+    "homepage": "https://captchafox.com",
+    "support": {
+        "docs": "https://docs.captchafox.com/en/integrations/typo3",
+        "issues": "https://github.com/CaptchaFox/captchafox-typo3/issues",
+        "source": "https://github.com/CaptchaFox/captchafox-typo3"
+    },
     "require": {
-        "typo3/cms-core": "^10.0 || ^11.0"
+        "php": "^7.4 || ^8.0",
+        "typo3/cms-core": "^10.4.11 || ^11.5.7",
+        "typo3/cms-form": "^10.4.11 || ^11.5.7"
     },
     "autoload": {
         "psr-4": {
@@ -15,17 +23,10 @@
         }
     },
     "config": {
-        "vendor-dir": "Build/vendor",
-        "bin-dir": "bin",
         "allow-plugins": {
             "typo3/class-alias-loader": true,
             "typo3/cms-composer-installers": true
         }
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
-        ]
     },
     "extra": {
         "typo3/cms": {
