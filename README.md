@@ -25,7 +25,8 @@ to 12.0.1 the static template "CaptchaFox-Typo3" was required; an existing inclu
 
 ## Configuration
 
-Set the keys in **Admin Tools > Settings > Extension Configuration > captchafox_official**:
+Set the keys in **Admin Tools > Settings > Extension Configuration > captchafox_official** (several
+sites can override them, see below):
 
 | Option | Default | Meaning |
 |---|---|---|
@@ -38,6 +39,25 @@ Set the keys in **Admin Tools > Settings > Extension Configuration > captchafox_
 
 The default keys are CaptchaFox's public test keys: the widget shows "For testing purposes only."
 and nothing is protected until you enter your own keys.
+
+## Several sites (multi-domain)
+
+In an installation with several sites, each site can use its own keys. Site settings override the
+extension configuration; each value that a site does not set falls back to it. Usually only the site
+key differs, because the secret key belongs to the CaptchaFox organization.
+
+`config/sites/<site>/settings.yaml`:
+
+```yaml
+captchafox:
+  siteKey: 'sk_…'
+  # Only if this site belongs to another CaptchaFox organization. Keep secrets out of version control:
+  secretKey: '%env(CAPTCHAFOX_SECRET_KEY_EXAMPLE_COM)%'
+```
+
+From TYPO3 13 on you can also edit both values in **Site Management > Settings** after adding the set
+"CaptchaFox" (`captchafox/captchafox`) to the site. The editor shows the secret in plain text; the
+`%env()%` reference above avoids that.
 
 ## Usage
 
