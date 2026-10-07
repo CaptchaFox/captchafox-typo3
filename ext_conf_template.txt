@@ -1,14 +1,17 @@
-# cat=plugin.captchafox; type=string; label=CaptchaFox Site Key
+# cat=basic//10; type=string; label=Site key: The site key from the CaptchaFox portal (Sites). The default is the public test key, which protects nothing. A site can override it with the site setting captchafox.siteKey.
 site_key = sk_11111111000000001111111100000000
 
-# cat=plugin.captchafox; type=string; label=CaptchaFox Secret Key
+# cat=basic//20; type=string; label=Secret key: The secret key of your CaptchaFox organization. The default is the public test key. A site can override it with the site setting captchafox.secretKey.
 secret_key = ok_11111111000000001111111100000000
 
-# cat=plugin.captchafox; type=string; label=CaptchaFox Language
-lang = de
+# cat=basic//30; type=string; label=Language: Language code for the widget, e.g. de or en. Leave empty to use the language of the current site language.
+lang =
 
-# cat=plugin.captchafox; type=boolean; label= CaptchaFox robotMode: If you use a frontend testing tool, which cannot solve the captcha
+# cat=basic//40; type=options[Let the form through and log a warning=allow,Block the form=block]; label=If CaptchaFox cannot be reached: Answers that CaptchaFox rejects are always rejected. This setting only applies when the verification service gives no usable answer (network error, timeout after 5 seconds, server error). Both cases are logged.
+apiUnavailable = allow
+
+# cat=testing//10; type=boolean; label=Robot mode: Switches CaptchaFox off for all visitors, e.g. for automated frontend tests. Never enable this on a live site.
 robotMode = 0
 
-# cat=plugin.captchafox; type=boolean; label= enforcing captcha even in development mode
+# cat=testing//20; type=boolean; label=Enforce in Development context: Without this option, CaptchaFox is neither shown nor checked while TYPO3 runs in the Development context.
 enforceCaptcha = 0

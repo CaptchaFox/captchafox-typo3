@@ -1,0 +1,6 @@
+# Not part of the released package (GitHub/Packagist archives and the TER upload).
+/.gitattributes export-ignore
+/.github export-ignore
+/.gitignore export-ignore
+/Tests export-ignore
+/phpunit.xml.dist export-ignore

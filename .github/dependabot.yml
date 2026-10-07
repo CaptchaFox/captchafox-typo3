@@ -1,0 +1,29 @@
+# Keeps the GitHub Actions of all release branches up to date. The actions are pinned to commit SHAs
+# (tags can be moved); Dependabot opens a pull request per branch with the new SHA and version comment.
+# Dependabot reads this file only from the default branch (main).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: main
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: v12
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: v10
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]

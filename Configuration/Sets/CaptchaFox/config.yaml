@@ -1,0 +1,4 @@
+# Site set for TYPO3 13 and later: makes the per-site CaptchaFox keys editable in the backend module
+# "Settings". Values in config/sites/<site>/settings.yaml also work without including the set.
+name: captchafox/captchafox
+label: CaptchaFox
