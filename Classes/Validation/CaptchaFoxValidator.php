@@ -5,50 +5,39 @@ declare(strict_types=1);
 namespace CaptchaFox\CaptchaFoxTypo3\Validation;
 
 use CaptchaFox\CaptchaFoxTypo3\Services\CaptchaService;
-use TYPO3\CMS\Core\Information\Typo3Version;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 class CaptchaFoxValidator extends AbstractValidator
 {
+    private const LANGUAGE_FILE = 'LLL:EXT:captchafox_official/Resources/Private/Language/locallang.xlf:';
+
     protected $acceptsEmptyValues = false;
 
-    protected CaptchaService $captchaService;
+    public function __construct(private readonly CaptchaService $captchaService) {}
 
-    public function injectCaptchaService(CaptchaService $captchaService)
+    public function isValid(mixed $value): void
     {
-        $this->captchaService = $captchaService;
-    }
+        $status = $this->captchaService->validate(is_string($value) ? $value : '', $this->getCurrentRequest());
 
-    public function __construct(array $options = []) {
-
-
-        if ((new Typo3Version())->getMajorVersion() < 11) {
-            parent::__construct($options);
+        if ($status['verified']) {
+            return;
         }
-    }
 
-    public function setOptions(array $options): void
-    {
-        $this->initializeDefaultOptions($options);
-    }
-
-    public function isValid($value): void
-    {
-        $status = $this->captchaService->validate((string)$value);
-
-        if ($status['error'] !== '') {
-            $errorText = $this->translateErrorMessage(
-                'LLL:EXT:captchafox_official/Resources/Private/Language/locallang.xlf:error_captchafox_' . $status['error'],
-                'captchafox_official'
-            );
-
-            if (empty($errorText)) {
-                $errorText = htmlspecialchars($status['error']);
-            }
-
-            $this->addError($errorText, 1753561629);
+        $message = $this->translateErrorMessage(self::LANGUAGE_FILE . 'error_captchafox_' . $status['error'], 'captchafox_official');
+        if ($message === '') {
+            // Error codes without a text of their own (e.g. new codes of the API).
+            $message = $this->translateErrorMessage(self::LANGUAGE_FILE . 'error_captchafox_default', 'captchafox_official');
         }
+
+        $this->addError($message, 1753561629);
     }
 
+    private function getCurrentRequest(): ServerRequestInterface
+    {
+        // TYPO3 13.2+ hands the request to validators; TYPO3 12 only has the global one.
+        $request = method_exists($this, 'getRequest') ? $this->getRequest() : null;
 
+        return $request instanceof ServerRequestInterface ? $request : $GLOBALS['TYPO3_REQUEST'];
+    }
 }

@@ -3,20 +3,18 @@ services:
     autowire: true
     autoconfigure: true
     public: false
+
   CaptchaFox\CaptchaFoxTypo3\:
     resource: '../Classes/*'
-    exclude: '../Classes/Domain/Model/*'
+    # Form elements are created by the form framework, the others are plain value objects and helpers.
+    exclude: '../Classes/{Domain/Model,Verification,Language}/*'
 
   CaptchaFox\CaptchaFoxTypo3\Services\CaptchaService:
     public: true
-    arguments:
-      $extensionConfiguration: '@TYPO3\CMS\Core\Configuration\ExtensionConfiguration'
-      $requestFactory: '@TYPO3\CMS\Core\Http\RequestFactory'
 
   CaptchaFox\CaptchaFoxTypo3\ViewHelpers\Form\CaptchaFoxViewHelper:
     public: true
-    arguments:
-      $captchaService: '@CaptchaFox\CaptchaFoxTypo3\Services\CaptchaService'
 
   CaptchaFox\CaptchaFoxTypo3\Validation\CaptchaFoxValidator:
     public: true
+    shared: false

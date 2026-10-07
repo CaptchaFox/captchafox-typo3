@@ -1,0 +1,12 @@
+categories:
+  captchafox: ~
+
+settings:
+  captchafox.siteKey:
+    default: ''
+    type: string
+    category: captchafox
+  captchafox.secretKey:
+    default: ''
+    type: string
+    category: captchafox
