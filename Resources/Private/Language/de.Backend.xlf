@@ -1,31 +1,39 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:captchafox_official/Resources/Private/Language/Backend.xlf" product-name="captchafox_official">
+	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:captchafox_official/Resources/Private/Language/Backend.xlf" product-name="captchafox_official">
 		<header/>
 		<body>
 			<trans-unit id="formEditor.elements.CaptchaFox.label" resname="formEditor.elements.CaptchaFox.label">
 				<source>CaptchaFox</source>
+				<target>CaptchaFox</target>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.CaptchaFox.description" resname="formEditor.elements.CaptchaFox.description">
 				<source>Protect form with CaptchaFox</source>
+				<target>Formular mit CaptchaFox schützen</target>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.CaptchaFox.editor.validators.CaptchaFox.label" resname="formEditor.elements.CaptchaFox.editor.validators.CaptchaFox.label">
 				<source>CaptchaFox protection</source>
+				<target>CaptchaFox-Schutz</target>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.CaptchaFox.editor.doNotShowLabel.label" resname="formEditor.elements.CaptchaFox.editor.doNotShowLabel.label">
 				<source>Hide label in frontend</source>
+				<target>Beschriftung im Frontend ausblenden</target>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.CaptchaFox.editor.displayMode.label" resname="formEditor.elements.CaptchaFox.editor.displayMode.label">
 				<source>Display Mode</source>
+				<target>Darstellung</target>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.CaptchaFox.editor.displayMode.option.inline" resname="formEditor.elements.CaptchaFox.editor.displayMode.option.inline">
 				<source>Inline</source>
+				<target>Inline</target>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.CaptchaFox.editor.displayMode.option.popup" resname="formEditor.elements.CaptchaFox.editor.displayMode.option.popup">
 				<source>Popup</source>
+				<target>Popup</target>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.CaptchaFox.editor.validators.label" resname="formEditor.elements.CaptchaFox.editor.validators.label">
 				<source>CaptchaFox validation is active</source>
+				<target>CaptchaFox-Prüfung ist aktiv</target>
 			</trans-unit>
 		</body>
 	</file>

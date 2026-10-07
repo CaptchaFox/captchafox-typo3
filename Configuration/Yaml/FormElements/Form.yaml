@@ -1,4 +1,4 @@
-# Adding use invisible recaptcha checkbox to form settings
+# Partial path of the CaptchaFox element (Resources/Private/Partials/CaptchaFox.html).
 TYPO3:
   CMS:
     Form:

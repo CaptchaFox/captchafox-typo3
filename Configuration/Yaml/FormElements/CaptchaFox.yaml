@@ -54,9 +54,7 @@ TYPO3:
                 groupSorting: 700
                 description: formEditor.elements.CaptchaFox.description
                 iconIdentifier: t3-form-icon-captchafox
-              implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
+              implementationClassName: 'CaptchaFox\CaptchaFoxTypo3\Domain\Model\FormElements\CaptchaFoxElement'
               properties:
-                containerClassAttribute: 'form-element form-element-number mb-3 captchafox'
-                elementClassAttribute: form-control
-                elementErrorClassAttribute: ~
+                containerClassAttribute: 'form-element form-element-captchafox mb-3 captchafox'
                 labelClassAttribute: form-label

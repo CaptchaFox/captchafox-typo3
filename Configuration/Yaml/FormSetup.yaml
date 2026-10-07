@@ -15,4 +15,4 @@ TYPO3:
               FormElement-CaptchaFox: Stage/SimpleTemplate
             dynamicRequireJsModules:
               additionalViewModelModules:
-                10: 'TYPO3/CMS/CaptchafoxTypo3/Backend/FormEditor/CaptchaFoxViewModel'
+                10: 'TYPO3/CMS/CaptchafoxOfficial/Backend/FormEditor/CaptchaFoxViewModel'

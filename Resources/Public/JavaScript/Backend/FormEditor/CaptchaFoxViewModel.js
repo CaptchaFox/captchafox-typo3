@@ -1,5 +1,7 @@
 /**
- * Module: TYPO3/CMS/CaptchafoxTypo3/Backend/FormEditor/CaptchaFoxViewModel
+ * Module: TYPO3/CMS/CaptchafoxOfficial/Backend/FormEditor/CaptchaFoxViewModel
+ *
+ * TYPO3 maps the RequireJS prefix TYPO3/CMS/<UpperCamelCase extension key>/ to Resources/Public/JavaScript/.
  */
 define(['jquery',
     'TYPO3/CMS/Form/Backend/FormEditor/Helper'

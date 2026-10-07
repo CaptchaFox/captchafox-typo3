@@ -1,32 +1,44 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2017-07-12T08:43:45" product-name="recaptcha">
+	<file source-language="en" datatype="plaintext" original="EXT:captchafox_official/Resources/Private/Language/locallang.xlf" product-name="captchafox_official">
 		<header/>
 		<body>
-			<trans-unit id="error_captchafox_missing-input-secret" xml:space="preserve">
+			<trans-unit id="error_captchafox_internal-required" resname="error_captchafox_internal-required">
+				<source>CAPTCHA was not solved</source>
+			</trans-unit>
+			<trans-unit id="error_captchafox_missing-input-secret" resname="error_captchafox_missing-input-secret">
 				<source>The CAPTCHA secret parameter is missing.</source>
 			</trans-unit>
-			<trans-unit id="error_captchafox_invalid-input-secret" xml:space="preserve">
+			<trans-unit id="error_captchafox_invalid-input-secret" resname="error_captchafox_invalid-input-secret">
 				<source>The CAPTCHA secret parameter is invalid or malformed.</source>
 			</trans-unit>
-			<trans-unit id="error_captchafox_missing-input-response" xml:space="preserve">
+			<trans-unit id="error_captchafox_missing-input-response" resname="error_captchafox_missing-input-response">
 				<source>The CAPTCHA response parameter is missing.</source>
 			</trans-unit>
-			<trans-unit id="error_captchafox_invalid-input-response" xml:space="preserve">
+			<trans-unit id="error_captchafox_invalid-input-response" resname="error_captchafox_invalid-input-response">
 				<source>The CAPTCHA response parameter is invalid or malformed.</source>
 			</trans-unit>
-			<trans-unit id="error_captchafox_invalid-bad-request" xml:space="preserve">
+			<trans-unit id="error_captchafox_bad-request" resname="error_captchafox_bad-request">
 				<source>The CAPTCHA request is invalid or malformed.</source>
 			</trans-unit>
-			<trans-unit id="error_captchafox_invalid-timeout-or-duplicate" xml:space="preserve">
-				<source>The CAPTCHA response is no longer valid.</source>
-			</trans-unit>
-			<trans-unit id="error_captchafox_timeout-or-duplicate" xml:space="preserve">
+			<trans-unit id="error_captchafox_timeout-or-duplicate" resname="error_captchafox_timeout-or-duplicate">
 				<source>The CAPTCHA has expired.</source>
 			</trans-unit>
-            <trans-unit id="error_captchafox_internal-required" xml:space="preserve">
-                <source>CAPTCHA was not solved</source>
-            </trans-unit>
+			<trans-unit id="error_captchafox_invalid-ip-match" resname="error_captchafox_invalid-ip-match">
+				<source>The CAPTCHA could not be verified for your connection. Please solve it again.</source>
+			</trans-unit>
+			<trans-unit id="error_captchafox_service-unavailable" resname="error_captchafox_service-unavailable">
+				<source>The CAPTCHA could not be verified right now. Please try again later.</source>
+			</trans-unit>
+			<trans-unit id="error_captchafox_default" resname="error_captchafox_default">
+				<source>The CAPTCHA could not be verified. Please solve it again.</source>
+			</trans-unit>
+			<trans-unit id="notice.robotMode" resname="notice.robotMode">
+				<source>CaptchaFox is switched off (robot mode). This form is not protected.</source>
+			</trans-unit>
+			<trans-unit id="notice.development" resname="notice.development">
+				<source>CaptchaFox is neither shown nor checked because TYPO3 runs in the Development context.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
