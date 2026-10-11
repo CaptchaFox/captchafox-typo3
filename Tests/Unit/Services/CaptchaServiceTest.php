@@ -144,6 +144,32 @@ final class CaptchaServiceTest extends TestCase
         );
     }
 
+    #[Test]
+    public function keepsTheConfigurationKeysOfVersion1200(): void
+    {
+        $configuration = $this->createService(['site_key' => 'sk_configured'])->getConfiguration();
+
+        self::assertSame('sk_configured', $configuration['site_key']);
+        self::assertSame('https://cdn.captchafox.com/api.js', $configuration['api_server']);
+        self::assertSame(CaptchaService::VERIFY_URL, $configuration['verify_server']);
+    }
+
+    #[Test]
+    public function validatesWithTheGlobalRequestWhenCalledAsInVersion1200(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = $this->request();
+        try {
+            $service = $this->createService([], $this->answer(200, '{"success":true}'));
+
+            self::assertSame(['verified' => true, 'error' => ''], $service->validate(self::TOKEN));
+            self::assertSame('192.0.2.10', $this->requests[0]['options']['form_params']['remoteIp']);
+            self::assertTrue($service->getShowCaptcha());
+            self::assertFalse($this->createService(['robotMode' => '1'])->getShowCaptcha());
+        } finally {
+            unset($GLOBALS['TYPO3_REQUEST']);
+        }
+    }
+
     /**
      * @param array<string, string> $configuration
      */
