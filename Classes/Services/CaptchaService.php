@@ -105,10 +105,14 @@ class CaptchaService implements LoggerAwareInterface
     }
 
     /**
+     * @param ServerRequestInterface|null $request Optional only for callers written against 10.0.x;
+     *                                             without it the global request is used.
      * @return array{verified: bool, error: string} The error is a key suffix for the language file.
      */
-    public function validate(string $token, ServerRequestInterface $request): array
+    public function validate(string $token = '', ?ServerRequestInterface $request = null): array
     {
+        $request = $request ?? $this->getGlobalRequest();
+
         if ($this->getDisabledReason($request) !== '') {
             return ['verified' => true, 'error' => ''];
         }
@@ -141,6 +145,33 @@ class CaptchaService implements LoggerAwareInterface
         ));
 
         return $block ? ['verified' => false, 'error' => 'service-unavailable'] : ['verified' => true, 'error' => ''];
+    }
+
+    /**
+     * The extension configuration with the keys of 10.0.x (api_server, verify_server).
+     *
+     * @deprecated Kept for integrations written against 10.0.x. Use getSiteKey(), getWidgetLanguage(),
+     *             getScriptUrl() and getDisabledReason() instead.
+     */
+    public function getConfiguration(): array
+    {
+        return $this->configuration + [
+            'api_server' => self::SCRIPT_URL,
+            'verify_server' => self::VERIFY_URL,
+        ];
+    }
+
+    /**
+     * @deprecated Kept for integrations written against 10.0.x. Use getDisabledReason() instead.
+     */
+    public function getShowCaptcha(?ServerRequestInterface $request = null): bool
+    {
+        return $this->getDisabledReason($request ?? $this->getGlobalRequest()) === '';
+    }
+
+    private function getGlobalRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 
     /**
