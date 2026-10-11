@@ -56,6 +56,16 @@
   // Called by the CaptchaFox API once it is loaded (onload parameter of the script URL).
   window.captchaFoxTypo3OnLoad = renderAll;
 
+  // Deprecated: the callback of the partial of 12.0.x. Copies of that partial load api.js themselves, let it
+  // render the widget and name this callback in data-callback; it writes the token into the field marked
+  // data-captchafox-form-field. Kept so that such partials keep working within 12.x.
+  window.cfVerifyAndSubmit = (token) => {
+    const field = document.querySelector('[data-captchafox-form-field]');
+    if (token && field) {
+      field.value = token;
+    }
+  };
+
   // The API may already be loaded, e.g. when another script loaded it first.
   if (window.captchafox && typeof window.captchafox.render === 'function') {
     renderAll();
