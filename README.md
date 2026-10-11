@@ -24,11 +24,12 @@ template and no TypoScript are needed: TYPO3 loads the form configuration of the
 (`Configuration/Form/CaptchaFox/config.yaml`) by itself. An include of the former static template
 "CaptchaFox-Typo3" does no harm and can be removed.
 
-When upgrading from TYPO3 13, change the Composer requirement from `^12` to `^14`.
+When upgrading from TYPO3 13, change the Composer requirement from `^12` to `^14` and read
+[Upgrading from 12.x](#upgrading-from-12x).
 
 ## Configuration
 
-Set the keys in **Admin Tools > Settings > Extension Configuration > captchafox_official** (several
+Set the keys in **System > Settings > Extension Configuration > captchafox_official** (several
 sites can override them, see below):
 
 | Option | Default | Meaning |
@@ -67,6 +68,23 @@ reference above avoids that.
 Add the element "CaptchaFox" to a form in the form editor. The element always verifies the answer,
 even if its validator was removed from the form definition. Several forms with CaptchaFox on one
 page work independently.
+
+## Upgrading from 12.x
+
+14.x is a new release line and drops the parts of 12.0.x that 12.x still keeps as deprecated. If your
+site uses its own copy of the CaptchaFox partial or calls the service from own code, adapt it:
+
+| Removed in 14.x | Use instead |
+|---|---|
+| Partial variables `{configuration}`, `{showCaptcha}`, `{name}` | `{captchafox.siteKey}`, `{captchafox.language}`, `{captchafox.scriptUrl}`, `{captchafox.disabledReason}`; start from the partial of this version |
+| JavaScript callback `cfVerifyAndSubmit` (`data-callback`, `data-captchafox-form-field` filled by it) | the partial of this version: `form.js` renders the widget and fills the field itself |
+| `CaptchaService::getConfiguration()`, `getShowCaptcha()` | `getSiteKey()`, `getWidgetLanguage()`, `getScriptUrl()`, `getDisabledReason()` |
+| `CaptchaService::validate($token)` without a request | `validate($token, $request)`; the request is required |
+| `$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['captchafox_official']['api_server']` and `['verify_server']` | `CaptchaService::SCRIPT_URL` and `CaptchaService::VERIFY_URL` |
+| Form editor module `Resources/Public/JavaScript/backend/form-editor/view-model.js` | nothing; the form editor of TYPO3 14 renders the element itself |
+
+The form configuration now comes as the form set `captchafox/captchafox-typo3`, which TYPO3 loads by itself.
+An include of the former static template or of the TypoScript registration of 12.x is no longer needed.
 
 ## Notes for operators
 
