@@ -9,6 +9,9 @@ use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 
 /**
  * Provides the variable {captchafox} (siteKey, language, scriptUrl, disabledReason) to its children.
+ *
+ * {configuration}, {showCaptcha} and {name} are the variables of 10.0.x; they stay for partials copied
+ * from that version (deprecated).
  */
 class CaptchaFoxViewHelper extends AbstractFormFieldViewHelper
 {
@@ -31,9 +34,15 @@ class CaptchaFoxViewHelper extends AbstractFormFieldViewHelper
             'scriptUrl' => $this->captchaService->getScriptUrl(),
             'disabledReason' => $this->captchaService->getDisabledReason($request),
         ]);
+        $container->add('configuration', $this->captchaService->getConfiguration());
+        $container->add('showCaptcha', $this->captchaService->getShowCaptcha($request));
+        $container->add('name', $this->getName());
 
         $content = (string)$this->renderChildren();
 
+        $container->remove('name');
+        $container->remove('showCaptcha');
+        $container->remove('configuration');
         $container->remove('captchafox');
 
         return $content;
