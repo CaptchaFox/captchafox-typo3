@@ -16,16 +16,16 @@
 				<target>Site-Key</target>
 			</trans-unit>
 			<trans-unit id="settings.description.captchafox.siteKey" resname="settings.description.captchafox.siteKey">
-				<source>Site key of this site from the CaptchaFox portal (Sites). Empty: the site key from the extension configuration.</source>
-				<target>Site-Key dieser Site aus dem CaptchaFox-Portal (Sites). Leer: der Site-Key aus der Extension-Konfiguration.</target>
+				<source>Site key of this site from the CaptchaFox portal (Sites &gt; Site Details). Empty: the site key from the extension configuration.</source>
+				<target>Site-Key dieser Site aus dem CaptchaFox-Portal (Sites &gt; Site Details). Leer: der Site-Key aus der Extension-Konfiguration.</target>
 			</trans-unit>
 			<trans-unit id="settings.captchafox.secretKey" resname="settings.captchafox.secretKey">
 				<source>Secret key</source>
 				<target>Secret-Key</target>
 			</trans-unit>
 			<trans-unit id="settings.description.captchafox.secretKey" resname="settings.description.captchafox.secretKey">
-				<source>Only needed if this site belongs to another CaptchaFox organization. Empty: the secret key from the extension configuration. The value is stored in plain text in settings.yaml; to keep it out of version control, write %env(NAME)% there and set the environment variable.</source>
-				<target>Nur nötig, wenn diese Site zu einer anderen CaptchaFox-Organisation gehört. Leer: der Secret-Key aus der Extension-Konfiguration. Der Wert steht im Klartext in settings.yaml; um ihn aus der Versionsverwaltung herauszuhalten, dort %env(NAME)% eintragen und die Umgebungsvariable setzen.</target>
+				<source>Secret key of this site from the CaptchaFox portal (Sites &gt; Site Details). Empty: the secret key from the extension configuration. The value is stored in plain text in settings.yaml; to keep it out of version control, write %env(NAME)% there and set the environment variable.</source>
+				<target>Secret-Key dieser Site aus dem CaptchaFox-Portal (Sites &gt; Site Details). Leer: der Secret-Key aus der Extension-Konfiguration. Der Wert steht im Klartext in settings.yaml; um ihn aus der Versionsverwaltung herauszuhalten, dort %env(NAME)% eintragen und die Umgebungsvariable setzen.</target>
 			</trans-unit>
 		</body>
 	</file>
